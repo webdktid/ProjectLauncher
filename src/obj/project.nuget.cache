@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "UcsuJg6KBV+BvZJnB8BgNpVpK0Oise7VctC65RAje31HzzQFY8aiVHgOHAWCO5aChpnweTNOFvQJ1kBm5DOvUw==",
+  "success": true,
+  "projectFilePath": "D:\\nongit\\ProjectLaunch\\ProjectLaunch.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TID\\.nuget\\packages\\libgit2sharp\\0.26.2\\libgit2sharp.0.26.2.nupkg.sha512",
+    "C:\\Users\\TID\\.nuget\\packages\\libgit2sharp.nativebinaries\\2.0.306\\libgit2sharp.nativebinaries.2.0.306.nupkg.sha512"
+  ],
+  "logs": []
+}
