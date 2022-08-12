@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <ApplicationIcon>D:\nongit\ProjectLaunch\app.ico</ApplicationIcon>
+	  <!--<ApplicationIcon>D:\nongit\ProjectLaunch\app.ico</ApplicationIcon>-->
 	  <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>

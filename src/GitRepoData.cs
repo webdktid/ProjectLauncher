@@ -9,6 +9,7 @@
         public string GitCommitAuthor  { get; set; }
         public string GitBranchName { get; set; }
         public long ProcessId { get; set; }
+        public int GitRemoteChanges { get; set; }
 
     }
 }

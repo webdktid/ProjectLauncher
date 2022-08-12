@@ -34,11 +34,12 @@
             this.Branch = new System.Windows.Forms.ColumnHeader();
             this.GitStatus = new System.Windows.Forms.ColumnHeader();
             this.GitMessage = new System.Windows.Forms.ColumnHeader();
+            this.GitAuthoer = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fucktionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GitAuthoer = new System.Windows.Forms.ColumnHeader();
+            this.GitRemoteChanges = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +54,8 @@
             this.Branch,
             this.GitStatus,
             this.GitMessage,
-            this.GitAuthoer});
+            this.GitAuthoer,
+            this.GitRemoteChanges});
             this.listviewOverview.FullRowSelect = true;
             this.listviewOverview.Location = new System.Drawing.Point(12, 57);
             this.listviewOverview.Name = "listviewOverview";
@@ -61,7 +63,7 @@
             this.listviewOverview.TabIndex = 0;
             this.listviewOverview.UseCompatibleStateImageBehavior = false;
             this.listviewOverview.View = System.Windows.Forms.View.Details;
-            this.listviewOverview.DoubleClick += new System.EventHandler(this.listviewOverview_DoubleClick);
+            this.listviewOverview.DoubleClick += new System.EventHandler(this.listViewOverview_DoubleClick);
             // 
             // SolutionFile
             // 
@@ -87,6 +89,10 @@
             // 
             this.GitMessage.Text = "GitMessage";
             this.GitMessage.Width = 250;
+            // 
+            // GitAuthoer
+            // 
+            this.GitAuthoer.Text = "GitAuthoer";
             // 
             // menuStrip1
             // 
@@ -120,11 +126,11 @@
             this.fucktionsToolStripMenuItem.Name = "fucktionsToolStripMenuItem";
             this.fucktionsToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.fucktionsToolStripMenuItem.Text = "Update";
-            this.fucktionsToolStripMenuItem.Click += new System.EventHandler(this.fucktionsToolStripMenuItem_Click);
+            this.fucktionsToolStripMenuItem.Click += new System.EventHandler(this.functionsToolStripMenuItem_Click);
             // 
-            // GitAuthoer
+            // GitRemoteChanges
             // 
-            this.GitAuthoer.Text = "GitAuthoer";
+            this.GitRemoteChanges.Text = "GitRemoteChanges";
             // 
             // FormMain
             // 
@@ -157,5 +163,6 @@
         private ToolStripMenuItem fucktionsToolStripMenuItem;
         private ColumnHeader GitMessage;
         private ColumnHeader GitAuthoer;
+        private ColumnHeader GitRemoteChanges;
     }
 }

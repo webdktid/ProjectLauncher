@@ -52,3 +52,4 @@ Thumbs.db
 /src/.vs*
 /src/obj*
 /src/.vs/*
+/src/bin*

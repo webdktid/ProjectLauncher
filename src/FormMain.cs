@@ -47,12 +47,18 @@ namespace ProjectLaunch
 
                 listViewItem.SubItems.Add(gitRepoData.GitCommitMessage);
                 listViewItem.SubItems.Add(gitRepoData.GitCommitAuthor);
+                listViewItem.SubItems.Add(gitRepoData.GitRemoteChanges.ToString());
+
+                if (gitRepoData.GitRemoteChanges > 0)
+                    listViewItem.BackColor = Color.SkyBlue;
+
             }
 
 
             listviewOverview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
+  
 
         private void UpdateDataList()
         {
@@ -73,13 +79,14 @@ namespace ProjectLaunch
 
             foreach (var directory in directories)
             {
-                var solutionFileName = FindSolutionFile(directory);
-                
-           
-
 
                 using (Repository repo = new Repository(directory))
                 {
+
+                    var trackingBranch = repo.Head.TrackedBranch;
+                    var log = repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id });
+
+                    var gitRemoteChanges = log.Count();//Counts the number of log entries
 
 
                     StatusOptions options = new StatusOptions();
@@ -96,7 +103,8 @@ namespace ProjectLaunch
                         GitCommitMessage = commit.MessageShort,
                         ProcessId = -1,
                         SolutionName = FindSolutionFile(directory),
-                        GitBranchName = repo.Head.FriendlyName
+                        GitBranchName = repo.Head.FriendlyName,
+                        GitRemoteChanges = gitRemoteChanges
                     });
 
                 }
@@ -132,7 +140,7 @@ namespace ProjectLaunch
             return file.Substring(ix + 1, file.Length - ix + 1 - 6);
         }
 
-        private void fucktionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void functionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateDataList();
             UpdateView();
@@ -143,7 +151,7 @@ namespace ProjectLaunch
             Close();
         }
 
-        private void listviewOverview_DoubleClick(object sender, EventArgs e)
+        private void listViewOverview_DoubleClick(object sender, EventArgs e)
         {
             var ix = listviewOverview.SelectedIndices[0];
 
@@ -157,6 +165,9 @@ namespace ProjectLaunch
                 MessageBox.Show("Solution file not found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+          //  GetLatest(data.Folder);
+
 
             var launcher = ConfigurationManager.AppSettings["launcher"];
 
