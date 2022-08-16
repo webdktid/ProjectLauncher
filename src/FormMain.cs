@@ -14,8 +14,15 @@ namespace ProjectLaunch
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+
+            this.Show();
+            Application.DoEvents();
+
             UpdateDataList();
+            Application.DoEvents();
+
             UpdateView();
+            Application.DoEvents();
         }
 
         private void UpdateView()
@@ -153,12 +160,23 @@ namespace ProjectLaunch
 
         private void listViewOverview_DoubleClick(object sender, EventArgs e)
         {
+            LaunchVisualStudio();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+
+        private void LaunchVisualStudio()
+        {
             var ix = listviewOverview.SelectedIndices[0];
 
             if (ix == -1)
                 return;
 
-            var data = (GitRepoData) listviewOverview.Items[ix].Tag;
+            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
 
             if (string.IsNullOrWhiteSpace(data.SolutionName))
             {
@@ -166,7 +184,7 @@ namespace ProjectLaunch
                 return;
             }
 
-          //  GetLatest(data.Folder);
+            //  GetLatest(data.Folder);
 
 
             var launcher = ConfigurationManager.AppSettings["launcher"];
@@ -176,17 +194,37 @@ namespace ProjectLaunch
                 Verb = "runas"
             };
             var process = Process.Start(startInfo);
-            
-            if(process!=null)
+
+            if (process!=null)
                 data.ProcessId = process.Id;
 
         }
 
-      
 
-   
 
-    
-   
+        private void pullWithGitExtentionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ix = listviewOverview.SelectedIndices[0];
+
+            if (ix == -1)
+                return;
+
+            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
+
+            var gitExtentions = ConfigurationManager.AppSettings["GitExtentions"];
+
+            ProcessStartInfo startInfo = new ProcessStartInfo(gitExtentions, $"browse {data.Folder}")
+            {
+                Verb = "runas",
+                WorkingDirectory = data.Folder
+            };
+
+            var process = Process.Start(startInfo);
+        }
+
+        private void launchVisualStudioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LaunchVisualStudio();
+        }
     }
 }

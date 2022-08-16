@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listviewOverview = new System.Windows.Forms.ListView();
             this.SolutionFile = new System.Windows.Forms.ColumnHeader();
             this.GitDirectory = new System.Windows.Forms.ColumnHeader();
@@ -35,12 +36,16 @@
             this.GitStatus = new System.Windows.Forms.ColumnHeader();
             this.GitMessage = new System.Windows.Forms.ColumnHeader();
             this.GitAuthoer = new System.Windows.Forms.ColumnHeader();
+            this.GitRemoteChanges = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fucktionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GitRemoteChanges = new System.Windows.Forms.ColumnHeader();
+            this.contextMenuStripRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.pullWithGitExtentionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.launchVisualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
+            this.contextMenuStripRightClick.SuspendLayout();
             this.SuspendLayout();
             // 
             // listviewOverview
@@ -56,6 +61,7 @@
             this.GitMessage,
             this.GitAuthoer,
             this.GitRemoteChanges});
+            this.listviewOverview.ContextMenuStrip = this.contextMenuStripRightClick;
             this.listviewOverview.FullRowSelect = true;
             this.listviewOverview.Location = new System.Drawing.Point(12, 57);
             this.listviewOverview.Name = "listviewOverview";
@@ -94,6 +100,10 @@
             // 
             this.GitAuthoer.Text = "GitAuthoer";
             // 
+            // GitRemoteChanges
+            // 
+            this.GitRemoteChanges.Text = "GitRemoteChanges";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -128,9 +138,28 @@
             this.fucktionsToolStripMenuItem.Text = "Update";
             this.fucktionsToolStripMenuItem.Click += new System.EventHandler(this.functionsToolStripMenuItem_Click);
             // 
-            // GitRemoteChanges
+            // contextMenuStripRightClick
             // 
-            this.GitRemoteChanges.Text = "GitRemoteChanges";
+            this.contextMenuStripRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pullWithGitExtentionsToolStripMenuItem,
+            this.launchVisualStudioToolStripMenuItem});
+            this.contextMenuStripRightClick.Name = "contextMenuStrip1";
+            this.contextMenuStripRightClick.Size = new System.Drawing.Size(196, 70);
+            this.contextMenuStripRightClick.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // pullWithGitExtentionsToolStripMenuItem
+            // 
+            this.pullWithGitExtentionsToolStripMenuItem.Name = "pullWithGitExtentionsToolStripMenuItem";
+            this.pullWithGitExtentionsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.pullWithGitExtentionsToolStripMenuItem.Text = "Pull with git extentions";
+            this.pullWithGitExtentionsToolStripMenuItem.Click += new System.EventHandler(this.pullWithGitExtentionsToolStripMenuItem_Click);
+            // 
+            // launchVisualStudioToolStripMenuItem
+            // 
+            this.launchVisualStudioToolStripMenuItem.Name = "launchVisualStudioToolStripMenuItem";
+            this.launchVisualStudioToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.launchVisualStudioToolStripMenuItem.Text = "Launch Visual studio";
+            this.launchVisualStudioToolStripMenuItem.Click += new System.EventHandler(this.launchVisualStudioToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -145,6 +174,7 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenuStripRightClick.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,5 +194,8 @@
         private ColumnHeader GitMessage;
         private ColumnHeader GitAuthoer;
         private ColumnHeader GitRemoteChanges;
+        private ContextMenuStrip contextMenuStripRightClick;
+        private ToolStripMenuItem pullWithGitExtentionsToolStripMenuItem;
+        private ToolStripMenuItem launchVisualStudioToolStripMenuItem;
     }
 }
