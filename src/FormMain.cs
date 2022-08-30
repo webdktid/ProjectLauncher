@@ -1,5 +1,6 @@
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using LibGit2Sharp;
 
 namespace ProjectLaunch
@@ -65,7 +66,13 @@ namespace ProjectLaunch
             listviewOverview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-  
+
+        void ShowInfo(string text)
+        {
+            labelInfo.Text = text;
+            labelInfo.Update();
+        }
+
 
         private void UpdateDataList()
         {
@@ -83,13 +90,15 @@ namespace ProjectLaunch
             var directories = Directory.GetDirectories(baseDirectory, "*.*");
             directories.ToList().Sort();
 
-
+            int ix = 0;
             foreach (var directory in directories)
             {
 
                 using (Repository repo = new Repository(directory))
                 {
 
+                    ShowInfo($"Checking {directory} ({ix}/{directories.Length})");
+                    ix++;
                     var trackingBranch = repo.Head.TrackedBranch;
                     var log = repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id });
 
@@ -116,8 +125,8 @@ namespace ProjectLaunch
 
                 }
             }
+            ShowInfo($"Ready");
 
-          
         }
 
         private string FindSolutionFile(string directory)
@@ -151,6 +160,7 @@ namespace ProjectLaunch
         {
             UpdateDataList();
             UpdateView();
+            this.Width = listviewOverview.Width + 20;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
