@@ -236,5 +236,27 @@ namespace ProjectLaunch
         {
             LaunchVisualStudio();
         }
+
+        private void explorerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ix = listviewOverview.SelectedIndices[0];
+
+            if (ix == -1)
+                return;
+
+            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
+            
+
+
+
+            ProcessStartInfo startInfo = new ProcessStartInfo("explorer.exe", data.Folder)
+            {
+                Verb = "runas"
+            };
+            var process = Process.Start(startInfo);
+
+            if (process!=null)
+                data.ProcessId = process.Id;
+        }
     }
 }

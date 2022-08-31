@@ -45,6 +45,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fucktionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.explorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripRightClick.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -64,10 +65,9 @@
             this.GitRemoteChanges});
             this.listviewOverview.ContextMenuStrip = this.contextMenuStripRightClick;
             this.listviewOverview.FullRowSelect = true;
-            this.listviewOverview.Location = new System.Drawing.Point(14, 46);
-            this.listviewOverview.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.listviewOverview.Location = new System.Drawing.Point(12, 34);
             this.listviewOverview.Name = "listviewOverview";
-            this.listviewOverview.Size = new System.Drawing.Size(1278, 620);
+            this.listviewOverview.Size = new System.Drawing.Size(1119, 466);
             this.listviewOverview.TabIndex = 0;
             this.listviewOverview.UseCompatibleStateImageBehavior = false;
             this.listviewOverview.View = System.Windows.Forms.View.Details;
@@ -111,23 +111,24 @@
             this.contextMenuStripRightClick.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStripRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pullWithGitExtentionsToolStripMenuItem,
-            this.launchVisualStudioToolStripMenuItem});
+            this.launchVisualStudioToolStripMenuItem,
+            this.explorerToolStripMenuItem});
             this.contextMenuStripRightClick.Name = "contextMenuStrip1";
-            this.contextMenuStripRightClick.Size = new System.Drawing.Size(229, 52);
+            this.contextMenuStripRightClick.Size = new System.Drawing.Size(181, 92);
             this.contextMenuStripRightClick.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // pullWithGitExtentionsToolStripMenuItem
             // 
             this.pullWithGitExtentionsToolStripMenuItem.Name = "pullWithGitExtentionsToolStripMenuItem";
-            this.pullWithGitExtentionsToolStripMenuItem.Size = new System.Drawing.Size(228, 24);
-            this.pullWithGitExtentionsToolStripMenuItem.Text = "Pull with git extentions";
+            this.pullWithGitExtentionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pullWithGitExtentionsToolStripMenuItem.Text = "Git extentions";
             this.pullWithGitExtentionsToolStripMenuItem.Click += new System.EventHandler(this.pullWithGitExtentionsToolStripMenuItem_Click);
             // 
             // launchVisualStudioToolStripMenuItem
             // 
             this.launchVisualStudioToolStripMenuItem.Name = "launchVisualStudioToolStripMenuItem";
-            this.launchVisualStudioToolStripMenuItem.Size = new System.Drawing.Size(228, 24);
-            this.launchVisualStudioToolStripMenuItem.Text = "Launch Visual studio";
+            this.launchVisualStudioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.launchVisualStudioToolStripMenuItem.Text = "Visual studio";
             this.launchVisualStudioToolStripMenuItem.Click += new System.EventHandler(this.launchVisualStudioToolStripMenuItem_Click);
             // 
             // menuStrip1
@@ -138,8 +139,7 @@
             this.fucktionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1304, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1141, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -148,20 +148,20 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // fucktionsToolStripMenuItem
             // 
             this.fucktionsToolStripMenuItem.Name = "fucktionsToolStripMenuItem";
-            this.fucktionsToolStripMenuItem.Size = new System.Drawing.Size(72, 24);
+            this.fucktionsToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.fucktionsToolStripMenuItem.Text = "Update";
             this.fucktionsToolStripMenuItem.Click += new System.EventHandler(this.functionsToolStripMenuItem_Click);
             // 
@@ -169,22 +169,28 @@
             // 
             this.labelInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelInfo.AutoSize = true;
-            this.labelInfo.Location = new System.Drawing.Point(14, 670);
+            this.labelInfo.Location = new System.Drawing.Point(12, 502);
             this.labelInfo.Name = "labelInfo";
-            this.labelInfo.Size = new System.Drawing.Size(50, 20);
+            this.labelInfo.Size = new System.Drawing.Size(39, 15);
             this.labelInfo.TabIndex = 2;
             this.labelInfo.Text = "Ready";
             // 
+            // explorerToolStripMenuItem
+            // 
+            this.explorerToolStripMenuItem.Name = "explorerToolStripMenuItem";
+            this.explorerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.explorerToolStripMenuItem.Text = "Windows Explorer";
+            this.explorerToolStripMenuItem.Click += new System.EventHandler(this.explorerToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1304, 699);
+            this.ClientSize = new System.Drawing.Size(1141, 524);
             this.Controls.Add(this.labelInfo);
             this.Controls.Add(this.listviewOverview);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormMain";
             this.Text = "Project Launcher";
             this.Load += new System.EventHandler(this.FormMain_Load);
@@ -214,5 +220,6 @@
         private ToolStripMenuItem pullWithGitExtentionsToolStripMenuItem;
         private ToolStripMenuItem launchVisualStudioToolStripMenuItem;
         private Label labelInfo;
+        private ToolStripMenuItem explorerToolStripMenuItem;
     }
 }
