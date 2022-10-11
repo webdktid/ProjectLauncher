@@ -100,10 +100,14 @@ namespace ProjectLaunch
                     ShowInfo($"Checking {directory} ({ix}/{directories.Length})");
                     ix++;
                     var trackingBranch = repo.Head.TrackedBranch;
-                    var log = repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id });
 
-                    var gitRemoteChanges = log.Count();//Counts the number of log entries
+                    var gitRemoteChanges = -1;
+                    if (trackingBranch != null)
+                    {
+                        var log = repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id });
 
+                        gitRemoteChanges = log.Count();//Counts the number of log entries
+                    }
 
                     StatusOptions options = new StatusOptions();
                     var repositoryStatus = repo.RetrieveStatus(options);
