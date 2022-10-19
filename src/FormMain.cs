@@ -2,12 +2,14 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using LibGit2Sharp;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace ProjectLaunch
 {
     public partial class FormMain : Form
     {
         private List<GitRepoData> GitRepoDataList;
+
         public FormMain()
         {
             InitializeComponent();
@@ -64,6 +66,14 @@ namespace ProjectLaunch
 
 
             listviewOverview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            int total = 0;
+            foreach (ColumnHeader header in listviewOverview.Columns)
+            {
+                total += header.Width;
+            }
+
+            Width = total + 50;
         }
 
 
@@ -80,9 +90,10 @@ namespace ProjectLaunch
 
             string? baseDirectory = ConfigurationManager.AppSettings["directory"];
 
-            if (baseDirectory  == null)
+            if (baseDirectory == null)
             {
-                MessageBox.Show("startup directory not found in config", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("startup directory not found in config", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 Close();
             }
 
@@ -104,9 +115,10 @@ namespace ProjectLaunch
                     var gitRemoteChanges = -1;
                     if (trackingBranch != null)
                     {
-                        var log = repo.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id });
+                        var log = repo.Commits.QueryBy(new CommitFilter
+                            {IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id});
 
-                        gitRemoteChanges = log.Count();//Counts the number of log entries
+                        gitRemoteChanges = log.Count(); //Counts the number of log entries
                     }
 
                     StatusOptions options = new StatusOptions();
@@ -129,6 +141,7 @@ namespace ProjectLaunch
 
                 }
             }
+
             ShowInfo($"Ready");
 
         }
@@ -151,20 +164,12 @@ namespace ProjectLaunch
             return solution;
         }
 
-        private string GetSolutionNameFromFilename(string file)
-        {
-            if (file == "")
-                return "";
-
-            int ix = file.LastIndexOf("\\");
-            return file.Substring(ix + 1, file.Length - ix + 1 - 6);
-        }
 
         private void functionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateDataList();
             UpdateView();
-            this.Width = listviewOverview.Width + 20;
+            Width = listviewOverview.Width + 20;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -177,11 +182,6 @@ namespace ProjectLaunch
             LaunchVisualStudio();
         }
 
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
 
         private void LaunchVisualStudio()
         {
@@ -190,7 +190,7 @@ namespace ProjectLaunch
             if (ix == -1)
                 return;
 
-            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
+            var data = (GitRepoData) listviewOverview.Items[ix].Tag;
 
             if (string.IsNullOrWhiteSpace(data.SolutionName))
             {
@@ -209,7 +209,7 @@ namespace ProjectLaunch
             };
             var process = Process.Start(startInfo);
 
-            if (process!=null)
+            if (process != null)
                 data.ProcessId = process.Id;
 
         }
@@ -223,7 +223,7 @@ namespace ProjectLaunch
             if (ix == -1)
                 return;
 
-            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
+            var data = (GitRepoData) listviewOverview.Items[ix].Tag;
 
             var gitExtentions = ConfigurationManager.AppSettings["GitExtentions"];
 
@@ -248,8 +248,8 @@ namespace ProjectLaunch
             if (ix == -1)
                 return;
 
-            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
-            
+            var data = (GitRepoData) listviewOverview.Items[ix].Tag;
+
 
 
 
@@ -259,8 +259,45 @@ namespace ProjectLaunch
             };
             var process = Process.Start(startInfo);
 
-            if (process!=null)
+            if (process != null)
                 data.ProcessId = process.Id;
+        }
+
+        private void getLatestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var gitRepoData in GitRepoDataList)
+            {
+                ShowInfo($"Getting latest for {gitRepoData.SolutionName}");
+
+                using (Repository repo = new Repository(gitRepoData.Folder))
+                {
+                    var buildSignature = repo.Config.BuildSignature(DateTimeOffset.Now);
+                    var repositoryStatus = repo.RetrieveStatus(new StatusOptions());
+
+                    if(!repositoryStatus.IsDirty)
+                        Rebase(repo, buildSignature);
+                }
+            }
+            ShowInfo("Done..");
+
+        }
+        public void Rebase(Repository repo, Signature signature)
+        {
+            var head = repo.Head;
+            var tracked = head.TrackedBranch;
+
+
+            var result = repo.Rebase.Start(head, tracked, null, new Identity(signature.Name, signature.Email), new RebaseOptions());
+            if (result.Status != RebaseStatus.Complete)
+            {
+                repo.Rebase.Abort();
+                ShowInfo($"Could not rebase {head.FriendlyName} onto {head.TrackedBranch.FriendlyName}");
+            }
+
+            if (result.CompletedStepCount > 0)
+            {
+                // One or more commits were rebased
+            }
         }
     }
 }
