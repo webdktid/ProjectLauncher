@@ -108,42 +108,47 @@ namespace ProjectLaunch
                 using (Repository repo = new Repository(directory))
                 {
 
-                    ShowInfo($"Checking {directory} ({ix}/{directories.Length})");
                     ix++;
-                    var trackingBranch = repo.Head.TrackedBranch;
+                    ShowInfo($"Checking {directory} ({ix}/{directories.Length})");
 
-                    var gitRemoteChanges = -1;
-                    if (trackingBranch != null)
-                    {
-                        var log = repo.Commits.QueryBy(new CommitFilter
-                            {IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id});
-
-                        gitRemoteChanges = log.Count(); //Counts the number of log entries
-                    }
-
-                    StatusOptions options = new StatusOptions();
-                    var repositoryStatus = repo.RetrieveStatus(options);
-
-                    var commit = repo.Commits.FirstOrDefault();
-
-
-                    GitRepoDataList.Add(new GitRepoData()
-                    {
-                        Folder = directory,
-                        IsDirty = repositoryStatus.IsDirty,
-                        GitCommitAuthor = commit.Author.Name,
-                        GitCommitMessage = commit.MessageShort,
-                        ProcessId = -1,
-                        SolutionName = FindSolutionFile(directory),
-                        GitBranchName = repo.Head.FriendlyName,
-                        GitRemoteChanges = gitRemoteChanges
-                    });
-
+                    CheckGitDirectory(repo, directory);
                 }
             }
 
             ShowInfo($"Ready");
 
+        }
+
+        private void CheckGitDirectory(Repository repo, string directory)
+        {
+            var trackingBranch = repo.Head.TrackedBranch;
+
+            var gitRemoteChanges = -1;
+            if (trackingBranch != null)
+            {
+                var log = repo.Commits.QueryBy(new CommitFilter
+                    {IncludeReachableFrom = trackingBranch.Tip.Id, ExcludeReachableFrom = repo.Head.Tip.Id});
+
+                gitRemoteChanges = log.Count(); //Counts the number of log entries
+            }
+
+            StatusOptions options = new StatusOptions();
+            var repositoryStatus = repo.RetrieveStatus(options);
+
+            var commit = repo.Commits.FirstOrDefault();
+
+
+            GitRepoDataList.Add(new GitRepoData()
+            {
+                Folder = directory,
+                IsDirty = repositoryStatus.IsDirty,
+                GitCommitAuthor = commit.Author.Name,
+                GitCommitMessage = commit.MessageShort,
+                ProcessId = -1,
+                SolutionName = FindSolutionFile(directory),
+                GitBranchName = repo.Head.FriendlyName,
+                GitRemoteChanges = gitRemoteChanges
+            });
         }
 
         private string FindSolutionFile(string directory)
@@ -263,6 +268,10 @@ namespace ProjectLaunch
                 data.ProcessId = process.Id;
         }
 
+
+
+
+
         private void getLatestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach (var gitRepoData in GitRepoDataList)
@@ -274,20 +283,29 @@ namespace ProjectLaunch
                     var buildSignature = repo.Config.BuildSignature(DateTimeOffset.Now);
                     var repositoryStatus = repo.RetrieveStatus(new StatusOptions());
 
-                    if(!repositoryStatus.IsDirty)
+                    if (!repositoryStatus.IsDirty)
+                    {
                         Rebase(repo, buildSignature);
+
+                    }
                 }
             }
+
+            UpdateDataList();
+            UpdateView();
+
             ShowInfo("Done..");
 
         }
+
         public void Rebase(Repository repo, Signature signature)
         {
             var head = repo.Head;
             var tracked = head.TrackedBranch;
 
 
-            var result = repo.Rebase.Start(head, tracked, null, new Identity(signature.Name, signature.Email), new RebaseOptions());
+            var result = repo.Rebase.Start(head, tracked, null, new Identity(signature.Name, signature.Email),
+                new RebaseOptions());
             if (result.Status != RebaseStatus.Complete)
             {
                 repo.Rebase.Abort();
@@ -298,6 +316,46 @@ namespace ProjectLaunch
             {
                 // One or more commits were rebased
             }
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void gitPullrebaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ix = listviewOverview.SelectedIndices[0];
+
+            if (ix == -1)
+                return;
+
+            var data = (GitRepoData) listviewOverview.Items[ix].Tag;
+
+            if (data.IsDirty)
+            {
+                MessageBox.Show("Dirty git branch");
+                return;
+            }
+
+            using (Repository repo = new Repository(data.Folder))
+            {
+                var remote = repo.Network.Remotes["origin"];
+                var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+                Commands.Fetch(repo, remote.Name, refSpecs, new FetchOptions {Prune = true}, string.Empty);
+
+                var id = new Identity("name", "email");
+                var opt = new RebaseOptions();
+                var rebaseResult = repo.Rebase.Start(
+                    branch: repo.Head,
+                    upstream: repo.Head.TrackedBranch,
+                    onto: null,
+                    id,
+                    opt
+                );
+            }
+            
+            UpdateView();
         }
     }
 }

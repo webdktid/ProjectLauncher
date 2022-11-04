@@ -46,7 +46,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fucktionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelInfo = new System.Windows.Forms.Label();
-            this.getLatestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gitPullrebaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripRightClick.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -112,10 +112,11 @@
             this.contextMenuStripRightClick.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStripRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pullWithGitExtentionsToolStripMenuItem,
+            this.gitPullrebaseToolStripMenuItem,
             this.launchVisualStudioToolStripMenuItem,
             this.explorerToolStripMenuItem});
             this.contextMenuStripRightClick.Name = "contextMenuStrip1";
-            this.contextMenuStripRightClick.Size = new System.Drawing.Size(170, 70);
+            this.contextMenuStripRightClick.Size = new System.Drawing.Size(181, 114);
             // 
             // pullWithGitExtentionsToolStripMenuItem
             // 
@@ -143,13 +144,13 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.fucktionsToolStripMenuItem,
-            this.getLatestToolStripMenuItem});
+            this.fucktionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1141, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -183,12 +184,12 @@
             this.labelInfo.TabIndex = 2;
             this.labelInfo.Text = "Ready";
             // 
-            // getLatestToolStripMenuItem
+            // gitPullrebaseToolStripMenuItem
             // 
-            this.getLatestToolStripMenuItem.Name = "getLatestToolStripMenuItem";
-            this.getLatestToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
-            this.getLatestToolStripMenuItem.Text = "Get latest";
-            this.getLatestToolStripMenuItem.Click += new System.EventHandler(this.getLatestToolStripMenuItem_Click);
+            this.gitPullrebaseToolStripMenuItem.Name = "gitPullrebaseToolStripMenuItem";
+            this.gitPullrebaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gitPullrebaseToolStripMenuItem.Text = "Git pull --rebase";
+            this.gitPullrebaseToolStripMenuItem.Click += new System.EventHandler(this.gitPullrebaseToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -229,6 +230,6 @@
         private ToolStripMenuItem launchVisualStudioToolStripMenuItem;
         private Label labelInfo;
         private ToolStripMenuItem explorerToolStripMenuItem;
-        private ToolStripMenuItem getLatestToolStripMenuItem;
+        private ToolStripMenuItem gitPullrebaseToolStripMenuItem;
     }
 }
