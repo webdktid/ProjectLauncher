@@ -1,8 +1,6 @@
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using LibGit2Sharp;
-using static System.Windows.Forms.Design.AxImporter;
 
 namespace ProjectLaunch
 {
@@ -358,28 +356,42 @@ namespace ProjectLaunch
             UpdateView();
         }
 
+        private void RunGitCommand(string folder, string arguments)
+        {
+            var startInfo = new ProcessStartInfo("git.exe", arguments)
+            {
+                Verb = "runas",
+                WorkingDirectory = folder,
+                WindowStyle = ProcessWindowStyle.Normal,
+            };
+            var process = Process.Start(startInfo);
+        }
+
+
+
         private void gitCreateBranchAndPullRequestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var ix = listviewOverview.SelectedIndices[0];
-
             if (ix == -1)
                 return;
-
             var data = (GitRepoData)listviewOverview.Items[ix].Tag;
+
 
 
 
             using (Repository repo = new Repository(data.Folder))
             {
+
+
                 var repositoryStatus = repo.RetrieveStatus(new StatusOptions());
                 
-                var newBranchForm = new NewBranch(repositoryStatus);
+                //show the form
+                var newBranchForm = new NewBranch(repositoryStatus, true);
                 newBranchForm.ShowDialog();
                 if (newBranchForm.Commit != true)
                     return;
 
                 var originalBranchName  = repo.Head.CanonicalName;
-
                 var gitName = ConfigurationManager.AppSettings["GitName"];
                 var gitEmail = ConfigurationManager.AppSettings["GitEmail"];
 
@@ -393,16 +405,20 @@ namespace ProjectLaunch
                 repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
                 var commit = repo.Commit(newBranchForm.CommitMessage, author, author, new CommitOptions { AllowEmptyCommit = true });
 
-                var startInfo = new ProcessStartInfo("git.exe", $"push origin {newBranchForm.BranchName}")
-                {
-                    Verb = "runas",
-                    WorkingDirectory = data.Folder,
-                    WindowStyle = ProcessWindowStyle.Normal
-                };
-                var process = Process.Start(startInfo);
+                //push the branch, not possible using LibGit2Sharp - ssh not supported. 
+                RunGitCommand(data.Folder, $"push origin {newBranchForm.BranchName}");
 
                 //switch back to the original branch
                 Commands.Checkout(repo, originalBranchName);
+
+                if (newBranchForm.CreatePullRequest)
+                {
+                    var url = repo.Network.Remotes.FirstOrDefault()!.PushUrl;
+
+                    RunGitCommand(data.Folder, $"request-pull {newBranchForm.BranchName} {url} {originalBranchName}");
+                }
+
+
             }
 
 

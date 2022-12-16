@@ -35,6 +35,7 @@
             this.buttonCerate = new System.Windows.Forms.Button();
             this.buttonCansel = new System.Windows.Forms.Button();
             this.labelStatus = new System.Windows.Forms.Label();
+            this.checkBoxPullRequest = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -98,11 +99,22 @@
             this.labelStatus.TabIndex = 6;
             this.labelStatus.Text = "Status";
             // 
+            // checkBoxPullRequest
+            // 
+            this.checkBoxPullRequest.AutoSize = true;
+            this.checkBoxPullRequest.Location = new System.Drawing.Point(23, 168);
+            this.checkBoxPullRequest.Name = "checkBoxPullRequest";
+            this.checkBoxPullRequest.Size = new System.Drawing.Size(125, 19);
+            this.checkBoxPullRequest.TabIndex = 7;
+            this.checkBoxPullRequest.Text = "Create Pull request";
+            this.checkBoxPullRequest.UseVisualStyleBackColor = true;
+            // 
             // NewBranch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(542, 302);
+            this.Controls.Add(this.checkBoxPullRequest);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.buttonCansel);
             this.Controls.Add(this.buttonCerate);
@@ -126,5 +138,6 @@
         private Button buttonCerate;
         private Button buttonCansel;
         private Label labelStatus;
+        private CheckBox checkBoxPullRequest;
     }
 }
