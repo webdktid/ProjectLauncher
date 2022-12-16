@@ -17,7 +17,7 @@ namespace ProjectLaunch
         public string CommitMessage { get; set; }
         public string BranchName { get; set; }
         public bool Commit { get; set; }
-        public bool CreatePullRequest { get; set; }
+     
 
 
         public NewBranch(RepositoryStatus repositoryStatus,BranchCollection branchCollection, bool enablePullCommit)
@@ -28,7 +28,7 @@ namespace ProjectLaunch
             
             labelStatus.Text = $@"Added:{repositoryStatus1.Added.Count()}, Modified:{repositoryStatus1.Modified.Count()} Removed:{repositoryStatus1.Removed.Count()}";
 
-            checkBoxPullRequest.Enabled = enablePullCommit;
+        
 
         }
 
@@ -52,7 +52,7 @@ namespace ProjectLaunch
             BranchName = textBoxBranchName.Text;
             CommitMessage = textBoxCommitMessage.Text;
             Commit = true;
-            CreatePullRequest = checkBoxPullRequest.Checked;
+          
             Close();
         }
 
