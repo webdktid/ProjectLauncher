@@ -1,5 +1,6 @@
 using System.Configuration;
 using System.Diagnostics;
+using System.Text;
 using LibGit2Sharp;
 
 namespace ProjectLaunch
@@ -356,7 +357,7 @@ namespace ProjectLaunch
             UpdateView();
         }
 
-        private void RunGitCommand(string folder, string arguments)
+        private string RunGitCommand(string folder, string arguments)
         {
             var startInfo = new ProcessStartInfo("git.exe", arguments)
             {
@@ -364,7 +365,36 @@ namespace ProjectLaunch
                 WorkingDirectory = folder,
                 WindowStyle = ProcessWindowStyle.Normal,
             };
-            var process = Process.Start(startInfo);
+            //var process = Process.Start(startInfo);
+
+            var sb = new StringBuilder();
+
+            Process p = new Process();
+            p.StartInfo.FileName = "git.exe";
+            p.StartInfo.Arguments = arguments;
+            p.StartInfo.WorkingDirectory = folder;
+
+            // redirect the output
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+
+            // hookup the eventhandlers to capture the data that is received
+            p.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
+            p.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
+
+            // direct start
+            p.StartInfo.UseShellExecute=false;
+
+            p.Start();
+            // start our event pumps
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
+
+            // until we are done
+            p.WaitForExit();
+
+            return sb.ToString();
+
         }
 
 
@@ -405,7 +435,9 @@ namespace ProjectLaunch
                 repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
 
                 //push the branch, not possible using LibGit2Sharp - ssh not supported. 
-                RunGitCommand(data.Folder, $"push origin {newBranchForm.BranchName}");
+                var output = RunGitCommand(data.Folder, $"push origin {newBranchForm.BranchName}");
+
+                MessageBox.Show(output, "Output", MessageBoxButtons.OK);
 
                 //switch back to the original branch
                 Commands.Checkout(repo, originalBranchName);
@@ -414,7 +446,9 @@ namespace ProjectLaunch
                 {
                     var url = repo.Network.Remotes.FirstOrDefault()!.PushUrl;
 
-                    RunGitCommand(data.Folder, $"request-pull {newBranchForm.BranchName} {url} {originalBranchName}");
+                    output = RunGitCommand(data.Folder, $"request-pull {newBranchForm.BranchName} {url} {originalBranchName}");
+
+                    MessageBox.Show(output, "Output", MessageBoxButtons.OK);
                 }
 
 
