@@ -357,5 +357,48 @@ namespace ProjectLaunch
             
             UpdateView();
         }
+
+        private void gitCreateBranchAndPullRequestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ix = listviewOverview.SelectedIndices[0];
+
+            if (ix == -1)
+                return;
+
+            var data = (GitRepoData)listviewOverview.Items[ix].Tag;
+
+
+
+            using (Repository repo = new Repository(data.Folder))
+            {
+                var repositoryStatus = repo.RetrieveStatus(new StatusOptions());
+                
+                var newBranchForm = new NewBranch(repositoryStatus);
+                newBranchForm.ShowDialog();
+                if (newBranchForm.Commit != true)
+                    return;
+
+
+
+                var gitName = ConfigurationManager.AppSettings["GitName"];
+                var gitEmail = ConfigurationManager.AppSettings["GitEmail"];
+
+                var branch = repo.CreateBranch(newBranchForm.BranchName);
+                Commands.Checkout(repo, branch);
+                Commands.Stage(repo,"*");
+
+                var author = new Signature(gitName, gitEmail, DateTime.Now);
+                repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
+                var commit = repo.Commit(newBranchForm.CommitMessage, author, author, new CommitOptions { AllowEmptyCommit = true });
+
+                PushOptions options = new PushOptions();
+                repo.Network.Push(repo.Branches[newBranchForm.BranchName], options);
+
+            }
+
+
+
+
+        }
     }
 }

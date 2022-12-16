@@ -39,6 +39,7 @@
             this.GitRemoteChanges = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStripRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pullWithGitExtentionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gitPullrebaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.launchVisualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.explorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -46,7 +47,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fucktionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelInfo = new System.Windows.Forms.Label();
-            this.gitPullrebaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gitCreateBranchAndPullRequestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripRightClick.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -113,29 +114,37 @@
             this.contextMenuStripRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pullWithGitExtentionsToolStripMenuItem,
             this.gitPullrebaseToolStripMenuItem,
+            this.gitCreateBranchAndPullRequestToolStripMenuItem,
             this.launchVisualStudioToolStripMenuItem,
             this.explorerToolStripMenuItem});
             this.contextMenuStripRightClick.Name = "contextMenuStrip1";
-            this.contextMenuStripRightClick.Size = new System.Drawing.Size(181, 114);
+            this.contextMenuStripRightClick.Size = new System.Drawing.Size(253, 136);
             // 
             // pullWithGitExtentionsToolStripMenuItem
             // 
             this.pullWithGitExtentionsToolStripMenuItem.Name = "pullWithGitExtentionsToolStripMenuItem";
-            this.pullWithGitExtentionsToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.pullWithGitExtentionsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.pullWithGitExtentionsToolStripMenuItem.Text = "Git extentions";
             this.pullWithGitExtentionsToolStripMenuItem.Click += new System.EventHandler(this.pullWithGitExtentionsToolStripMenuItem_Click);
+            // 
+            // gitPullrebaseToolStripMenuItem
+            // 
+            this.gitPullrebaseToolStripMenuItem.Name = "gitPullrebaseToolStripMenuItem";
+            this.gitPullrebaseToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.gitPullrebaseToolStripMenuItem.Text = "Git pull --rebase";
+            this.gitPullrebaseToolStripMenuItem.Click += new System.EventHandler(this.gitPullrebaseToolStripMenuItem_Click);
             // 
             // launchVisualStudioToolStripMenuItem
             // 
             this.launchVisualStudioToolStripMenuItem.Name = "launchVisualStudioToolStripMenuItem";
-            this.launchVisualStudioToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.launchVisualStudioToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.launchVisualStudioToolStripMenuItem.Text = "Visual studio";
             this.launchVisualStudioToolStripMenuItem.Click += new System.EventHandler(this.launchVisualStudioToolStripMenuItem_Click);
             // 
             // explorerToolStripMenuItem
             // 
             this.explorerToolStripMenuItem.Name = "explorerToolStripMenuItem";
-            this.explorerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.explorerToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.explorerToolStripMenuItem.Text = "Windows Explorer";
             this.explorerToolStripMenuItem.Click += new System.EventHandler(this.explorerToolStripMenuItem_Click);
             // 
@@ -184,12 +193,12 @@
             this.labelInfo.TabIndex = 2;
             this.labelInfo.Text = "Ready";
             // 
-            // gitPullrebaseToolStripMenuItem
+            // gitCreateBranchAndPullRequestToolStripMenuItem
             // 
-            this.gitPullrebaseToolStripMenuItem.Name = "gitPullrebaseToolStripMenuItem";
-            this.gitPullrebaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.gitPullrebaseToolStripMenuItem.Text = "Git pull --rebase";
-            this.gitPullrebaseToolStripMenuItem.Click += new System.EventHandler(this.gitPullrebaseToolStripMenuItem_Click);
+            this.gitCreateBranchAndPullRequestToolStripMenuItem.Name = "gitCreateBranchAndPullRequestToolStripMenuItem";
+            this.gitCreateBranchAndPullRequestToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.gitCreateBranchAndPullRequestToolStripMenuItem.Text = "Git create branch and pull request";
+            this.gitCreateBranchAndPullRequestToolStripMenuItem.Click += new System.EventHandler(this.gitCreateBranchAndPullRequestToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -231,5 +240,6 @@
         private Label labelInfo;
         private ToolStripMenuItem explorerToolStripMenuItem;
         private ToolStripMenuItem gitPullrebaseToolStripMenuItem;
+        private ToolStripMenuItem gitCreateBranchAndPullRequestToolStripMenuItem;
     }
 }
