@@ -53,6 +53,7 @@
             this.textBoxBranchName.Name = "textBoxBranchName";
             this.textBoxBranchName.Size = new System.Drawing.Size(232, 23);
             this.textBoxBranchName.TabIndex = 1;
+            this.textBoxBranchName.TextChanged += new System.EventHandler(this.textBoxBranchName_TextChanged);
             // 
             // textBoxCommitMessage
             // 
@@ -78,7 +79,7 @@
             this.buttonCerate.TabIndex = 4;
             this.buttonCerate.Text = "Create";
             this.buttonCerate.UseVisualStyleBackColor = true;
-            this.buttonCerate.Click += new System.EventHandler(this.buttonCerate_Click);
+            this.buttonCerate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
             // buttonCansel
             // 

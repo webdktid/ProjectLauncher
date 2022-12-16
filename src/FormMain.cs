@@ -381,12 +381,12 @@ namespace ProjectLaunch
 
             using (Repository repo = new Repository(data.Folder))
             {
-
+                
 
                 var repositoryStatus = repo.RetrieveStatus(new StatusOptions());
                 
                 //show the form
-                var newBranchForm = new NewBranch(repositoryStatus, true);
+                var newBranchForm = new NewBranch(repositoryStatus, repo.Branches, true);
                 newBranchForm.ShowDialog();
                 if (newBranchForm.Commit != true)
                     return;
@@ -403,7 +403,6 @@ namespace ProjectLaunch
                 //commit to the new branch
                 var author = new Signature(gitName, gitEmail, DateTime.Now);
                 repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
-                var commit = repo.Commit(newBranchForm.CommitMessage, author, author, new CommitOptions { AllowEmptyCommit = true });
 
                 //push the branch, not possible using LibGit2Sharp - ssh not supported. 
                 RunGitCommand(data.Folder, $"push origin {newBranchForm.BranchName}");

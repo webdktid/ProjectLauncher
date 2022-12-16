@@ -13,14 +13,16 @@ namespace ProjectLaunch
 {
     public partial class NewBranch : Form
     {
+        private readonly BranchCollection _branchCollection;
         public string CommitMessage { get; set; }
         public string BranchName { get; set; }
         public bool Commit { get; set; }
         public bool CreatePullRequest { get; set; }
 
 
-        public NewBranch(RepositoryStatus repositoryStatus, bool enablePullCommit)
+        public NewBranch(RepositoryStatus repositoryStatus,BranchCollection branchCollection, bool enablePullCommit)
         {
+            _branchCollection = branchCollection;
             InitializeComponent();
             var repositoryStatus1 = repositoryStatus;
             
@@ -35,13 +37,28 @@ namespace ProjectLaunch
             Close();
         }
 
-        private void buttonCerate_Click(object sender, EventArgs e)
+        private void buttonCreate_Click(object sender, EventArgs e)
         {
+
+            foreach (var branch in _branchCollection)
+            {
+                if (branch.FriendlyName.ToLower() == textBoxBranchName.Text.ToLower())
+                {
+                    MessageBox.Show("Branch exists", "Branch exists", MessageBoxButtons.OK);
+                    return;
+                }
+            }
+
             BranchName = textBoxBranchName.Text;
             CommitMessage = textBoxCommitMessage.Text;
             Commit = true;
             CreatePullRequest = checkBoxPullRequest.Checked;
             Close();
+        }
+
+        private void textBoxBranchName_TextChanged(object sender, EventArgs e)
+        {
+            textBoxCommitMessage.Text = @$"{textBoxBranchName.Text}: ";
         }
     }
 }
