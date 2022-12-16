@@ -365,6 +365,7 @@ namespace ProjectLaunch
                 WindowStyle = ProcessWindowStyle.Normal,
             };
             var process = Process.Start(startInfo);
+            process.WaitForExit();
         }
 
 
