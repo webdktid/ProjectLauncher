@@ -359,13 +359,7 @@ namespace ProjectLaunch
 
         private string RunGitCommand(string folder, string arguments)
         {
-            var startInfo = new ProcessStartInfo("git.exe", arguments)
-            {
-                Verb = "runas",
-                WorkingDirectory = folder,
-                WindowStyle = ProcessWindowStyle.Normal,
-            };
-            //var process = Process.Start(startInfo);
+           
 
             var sb = new StringBuilder();
 
@@ -384,7 +378,7 @@ namespace ProjectLaunch
 
             // direct start
             p.StartInfo.UseShellExecute=false;
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             
             p.Start();
             // start our event pumps
@@ -407,49 +401,45 @@ namespace ProjectLaunch
                 return;
             var data = (GitRepoData)listviewOverview.Items[ix].Tag;
 
-
-
-
             using (Repository repo = new Repository(data.Folder))
             {
-                
+
 
                 var repositoryStatus = repo.RetrieveStatus(new StatusOptions());
-                
+
                 //show the form
                 var newBranchForm = new NewBranch(repositoryStatus, repo.Branches, true);
                 newBranchForm.ShowDialog();
                 if (newBranchForm.Commit != true)
                     return;
 
-                var originalBranchName  = repo.Head.CanonicalName;
+                var originalBranchName = repo.Head.CanonicalName;
                 var gitName = ConfigurationManager.AppSettings["GitName"];
                 var gitEmail = ConfigurationManager.AppSettings["GitEmail"];
 
                 //create a new branch
                 var localBranch = repo.CreateBranch(newBranchForm.BranchName);
                 Commands.Checkout(repo, localBranch);
-                Commands.Stage(repo,"*");
+                Commands.Stage(repo, "*");
 
                 //commit to the new branch
                 var author = new Signature(gitName, gitEmail, DateTime.Now);
-                repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
+                repo.Commit(newBranchForm.CommitMessage, author, author, new CommitOptions());
 
                 //push the branch, not possible using LibGit2Sharp - ssh not supported. 
                 var output1 = RunGitCommand(data.Folder, $"push origin {newBranchForm.BranchName}");
 
-             
+
                 //switch back to the original branch
                 Commands.Checkout(repo, originalBranchName);
 
-               
-                    var url = repo.Network.Remotes.FirstOrDefault()!.PushUrl;
 
-                    var output2  = RunGitCommand(data.Folder, $"request-pull {newBranchForm.BranchName} {url} {originalBranchName}");
+                var url = repo.Network.Remotes.FirstOrDefault()!.PushUrl;
 
-                    MessageBox.Show(output1 + "\n\r" + output2, "Message from git", MessageBoxButtons.OK);
-                
+                var output2 = RunGitCommand(data.Folder,
+                    $"request-pull {newBranchForm.BranchName} {url} {originalBranchName}");
 
+                MessageBox.Show(output1 + @"\r\n" + output2, @"Message from git", MessageBoxButtons.OK);
 
             }
 
