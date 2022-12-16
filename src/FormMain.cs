@@ -393,13 +393,13 @@ namespace ProjectLaunch
                 repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
                 var commit = repo.Commit(newBranchForm.CommitMessage, author, author, new CommitOptions { AllowEmptyCommit = true });
 
-                //push the new branch
-                repo.Network.Push(repo.Branches[newBranchForm.BranchName], new PushOptions());
-                var remote = repo.Network.Remotes["origin"];
-                repo.Branches.Update(localBranch,
-                    b => b.Remote = remote.Name,
-                    b => b.UpstreamBranch = localBranch.CanonicalName);
-                repo.Network.Push(localBranch, new PushOptions());
+                var startInfo = new ProcessStartInfo("git.exe", $"push origin {newBranchForm.BranchName}")
+                {
+                    Verb = "runas",
+                    WorkingDirectory = data.Folder,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+                var process = Process.Start(startInfo);
 
                 //switch back to the original branch
                 Commands.Checkout(repo, originalBranchName);
