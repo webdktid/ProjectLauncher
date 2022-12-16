@@ -401,7 +401,7 @@ namespace ProjectLaunch
                 };
                 var process = Process.Start(startInfo);
 
-                //switch back to the original branch
+       
                 Commands.Checkout(repo, originalBranchName);
             }
 
