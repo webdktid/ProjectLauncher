@@ -378,22 +378,31 @@ namespace ProjectLaunch
                 if (newBranchForm.Commit != true)
                     return;
 
-
+                var originalBranchName  = repo.Head.CanonicalName;
 
                 var gitName = ConfigurationManager.AppSettings["GitName"];
                 var gitEmail = ConfigurationManager.AppSettings["GitEmail"];
 
-                var branch = repo.CreateBranch(newBranchForm.BranchName);
-                Commands.Checkout(repo, branch);
+                //create a new branch
+                var localBranch = repo.CreateBranch(newBranchForm.BranchName);
+                Commands.Checkout(repo, localBranch);
                 Commands.Stage(repo,"*");
 
+                //commit to the new branch
                 var author = new Signature(gitName, gitEmail, DateTime.Now);
                 repo.Commit(newBranchForm.CommitMessage, author,author, new CommitOptions());
                 var commit = repo.Commit(newBranchForm.CommitMessage, author, author, new CommitOptions { AllowEmptyCommit = true });
 
-                PushOptions options = new PushOptions();
-                repo.Network.Push(repo.Branches[newBranchForm.BranchName], options);
+                //push the new branch
+                repo.Network.Push(repo.Branches[newBranchForm.BranchName], new PushOptions());
+                var remote = repo.Network.Remotes["origin"];
+                repo.Branches.Update(localBranch,
+                    b => b.Remote = remote.Name,
+                    b => b.UpstreamBranch = localBranch.CanonicalName);
+                repo.Network.Push(localBranch, new PushOptions());
 
+                //switch back to the original branch
+                Commands.Checkout(repo, originalBranchName);
             }
 
 
